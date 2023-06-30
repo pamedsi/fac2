@@ -1,11 +1,19 @@
 import { mapeamentoAssociativoFIFO } from "../associativoFIFO.ts";
 import { mapeamentoAssociativoLRU } from "../associativoLRU.ts";
+import { mapeamentoDireto } from "../direto.ts";
 import { T, tipoDeMapeamento } from "../model/tipoDeMapeamento.ts"
 
 export const comparar = (enderecoAProcurar: T, enderecoEncontrado: T, tipo: tipoDeMapeamento) => {
   switch (tipo) {
-    case "direto":
-      return JSON.stringify(enderecoAProcurar) === JSON.stringify(enderecoEncontrado)
+    case "direto":{
+      const blocoAProcurar = enderecoAProcurar as mapeamentoDireto
+      const blocoEncontrado = enderecoEncontrado as mapeamentoDireto
+      delete blocoAProcurar.index
+      delete blocoAProcurar.blocoNaMP
+      delete blocoEncontrado.index
+      delete blocoEncontrado.blocoNaMP
+      return JSON.stringify(blocoAProcurar) === JSON.stringify(blocoEncontrado)
+    }
     case "fifo": {
       const blocoAProcurar = enderecoAProcurar as mapeamentoAssociativoFIFO
       const blocoEncontrado = enderecoEncontrado as mapeamentoAssociativoFIFO

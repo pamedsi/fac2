@@ -1,12 +1,12 @@
 import { mapeamentoAssociativoFIFO } from "./associativoFIFO.ts";
 import { mapeamentoAssociativoLRU } from "./associativoLRU.ts";
+import { mapeamentoDireto } from "./direto.ts";
 import { T, tipoDeMapeamento } from "./model/tipoDeMapeamento.ts";
 import { comparar } from "./utils/compararEnderecos.ts";
 
 export class Cache {
   // deno-lint-ignore no-explicit-any
   linhas: any[]
-  // linhas: mapeamentoDireto[] | mapeamentoAssociativo [] | (mapeamentoAssociativo & mapeamentoDireto)[] | (mapeamentoAssociativo | mapeamentoDireto)[]
   numeroDeLinhas: number
   mapeamento: tipoDeMapeamento
   espacosUsados: number
@@ -23,22 +23,16 @@ export class Cache {
     this.espacosUsados = 0
   }
 
-  buscar (bloco: T) {
-    // Meta agora é endenter o que vai ser guardado nesse array
-    // Se a linha ou se a palavra
-
-    // COrrigir a função de comparar os objetos no compararEnderecos.ts
+  buscar (bloco: T, linhasDaCache: number) {
       switch (this.mapeamento) {
       case "direto": {
-        // const {tag, linha, palavra} = new mapeamentoDireto(endereco)
-        // const index = parseInt(tag, 2) % this.numeroDeLinhas
-        // const achou = Boolean()
-
-        // if (achou) return true
-        // else {
-        //   this.guardar(endereco, index) 
-        //   return false
-        // }
+        const blocoConvertido = bloco as mapeamentoDireto
+        const indexOcupado = this.linhas.find(bloco => bloco.index === blocoConvertido.gerarIndex(linhasDaCache))
+        if (indexOcupado) return comparar(indexOcupado, blocoConvertido, "direto")
+        else {
+          this.guardar(blocoConvertido)
+          return false
+        }
       }
       case "fifo" :{
         const achou = this.linhas.find(linhaDeCache => comparar(linhaDeCache, bloco, "fifo"))
@@ -62,10 +56,11 @@ export class Cache {
     }
   }
 
-  guardar(bloco: T) {
+  guardar(bloco: T): void {
     switch (this.mapeamento) {
       case "direto": {
-        
+        this.linhas.push(bloco)
+        this.imprimirConfirmacao()
         break;
       }
       case "fifo": {
@@ -97,12 +92,20 @@ export class Cache {
           })
           this.linhas = this.linhas.filter(bloco => !comparar(bloco, acessadoMenosRecentemente, "lru"))
         }
+        this.imprimirConfirmacao()
         break
       }
     }
   }
 
-  estaCheia() {
+  estaCheia(): boolean {
     return this.espacosUsados !== this.numeroDeLinhas
+  }
+
+  imprimirConfirmacao(): void {
+    console.log(`
+    Guardando endereço na cache.
+    Espaços usados: ${this.espacosUsados}\n
+    Espaços disponíveis:${this.numeroDeLinhas - this.espacosUsados}`)
   }
 }

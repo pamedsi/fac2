@@ -2,6 +2,7 @@ import { mapeamento } from "./model/mapeamento.ts"
 
 export class mapeamentoDireto extends mapeamento {
   linha: string
+  blocoNaMP?: number
   index?: number
 
   constructor (endereco: string) {
@@ -11,5 +12,11 @@ export class mapeamentoDireto extends mapeamento {
     this.tag = enderecoEmBits.substring(0,10)
     this.linha = enderecoEmBits.substring(10,20)
     this.palavra = enderecoEmBits.substring(20,32)
+    this.blocoNaMP = parseInt(this.tag + this.linha, 2)
+  }
+
+  gerarIndex(linhasDaCache: number) {
+    this.index = this.blocoNaMP! % linhasDaCache
+    return this.index
   }
 }
