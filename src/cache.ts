@@ -14,7 +14,7 @@ export class Cache {
   constructor (linhas: number, mapeamento: tipoDeMapeamento) {
     const errorMessage = "Tipo de mapeamento inválido! Insira 'direto', 'FIFO' ou 'LRU'!"
     const minuscula = mapeamento.toLowerCase()
-    const entradaCorreta = minuscula === "direto" || minuscula === "fifo" || minuscula === "lru"
+    const entradaCorreta = minuscula === "dir" || minuscula === "fifo" || minuscula === "lru"
     if (!entradaCorreta) throw new Error(errorMessage)
     
     this.linhas = []
@@ -23,12 +23,12 @@ export class Cache {
     this.espacosUsados = 0
   }
 
-  buscar (bloco: T, linhasDaCache: number) {
+  buscar (bloco: T) {
       switch (this.mapeamento) {
-      case "direto": {
+      case "dir": {
         const blocoConvertido = bloco as mapeamentoDireto
-        const indexOcupado = this.linhas.find(bloco => bloco.index === blocoConvertido.gerarIndex(linhasDaCache))
-        if (indexOcupado) return comparar(indexOcupado, blocoConvertido, "direto")
+        const indexOcupado = this.linhas.find(bloco => bloco.index === blocoConvertido.gerarIndex(this.numeroDeLinhas))
+        if (indexOcupado) return comparar(indexOcupado, blocoConvertido, "dir")
         else {
           this.guardar(blocoConvertido)
           return false
@@ -58,9 +58,9 @@ export class Cache {
 
   guardar(bloco: T): void {
     switch (this.mapeamento) {
-      case "direto": {
+      case "dir": {
         this.linhas.push(bloco)
-        this.imprimirConfirmacao()
+        
         break;
       }
       case "fifo": {
@@ -92,7 +92,7 @@ export class Cache {
           })
           this.linhas = this.linhas.filter(bloco => !comparar(bloco, acessadoMenosRecentemente, "lru"))
         }
-        this.imprimirConfirmacao()
+        
         break
       }
     }
@@ -100,12 +100,5 @@ export class Cache {
 
   estaCheia(): boolean {
     return this.espacosUsados !== this.numeroDeLinhas
-  }
-
-  imprimirConfirmacao(): void {
-    console.log(`
-    Guardando endereço na cache.
-    Espaços usados: ${this.espacosUsados}\n
-    Espaços disponíveis:${this.numeroDeLinhas - this.espacosUsados}`)
   }
 }

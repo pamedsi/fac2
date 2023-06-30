@@ -5,7 +5,7 @@ import { T, tipoDeMapeamento } from "../model/tipoDeMapeamento.ts"
 
 export const comparar = (enderecoAProcurar: T, enderecoEncontrado: T, tipo: tipoDeMapeamento) => {
   switch (tipo) {
-    case "direto":{
+    case "dir":{
       const blocoAProcurar = enderecoAProcurar as mapeamentoDireto
       const blocoEncontrado = enderecoEncontrado as mapeamentoDireto
       delete blocoAProcurar.index
