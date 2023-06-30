@@ -1,7 +1,7 @@
 import { mapeamentoAssociativoFIFO } from "./associativoFIFO.ts";
+import { mapeamentoAssociativoLRU } from "./associativoLRU.ts";
 import { Cache } from "./cache.ts"
 import { mapeamentoDireto } from "./direto.ts";
-import { mapeamento } from "./model/mapeamento.ts";
 import { tipoDeMapeamento } from "./model/tipoDeMapeamento.ts"
 import { momento } from "./utils/gerarMomento.ts";
 
@@ -18,7 +18,7 @@ try {
   entradas.forEach(async endereco => {
     switch (tipoDoMapeamento) {
       case "dir": {
-        const bloco = new mapeamentoDireto(endereco)
+        const bloco = new mapeamentoDireto(endereco, numeroDeLinhas)
         if(cache.buscar(bloco)) console.log('HIT')
         else console.log('MISS')
         break
@@ -28,14 +28,15 @@ try {
         break
       }
       case "lru": {
-        const bloco = new mapeamentoAssociativoFIFO(endereco, await momento())
+        const bloco = new mapeamentoAssociativoLRU(endereco, await momento())
         break
       }
       default:
         throw new Error("Modelo de mapeamento não reconhecido!")
     }
-  })
 
+  })
+    console.log(cache)
 } catch (error) {
   console.log(error)
 }

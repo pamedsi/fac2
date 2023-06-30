@@ -27,7 +27,7 @@ export class Cache {
       switch (this.mapeamento) {
       case "dir": {
         const blocoConvertido = bloco as mapeamentoDireto
-        const indexOcupado = this.linhas.find(bloco => bloco.index === blocoConvertido.gerarIndex(this.numeroDeLinhas))
+        const indexOcupado = this.linhas.find(bloco => bloco.index === blocoConvertido.index)
         if (indexOcupado) return comparar(indexOcupado, blocoConvertido, "dir")
         else {
           this.guardar(blocoConvertido)
@@ -60,7 +60,7 @@ export class Cache {
     switch (this.mapeamento) {
       case "dir": {
         this.linhas.push(bloco)
-        
+        this.espacosUsados++
         break;
       }
       case "fifo": {
