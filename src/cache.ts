@@ -74,11 +74,6 @@ export class Cache {
           })
           this.linhas = this.linhas.filter(bloco => !comparar(bloco, maisAntigo, "fifo"))
         }
-
-        console.log(`
-        Guardando endereço na cache.
-        Espaços usados: ${this.espacosUsados}\n
-        Espaços disponíveis:${this.numeroDeLinhas - this.espacosUsados}`)
         break
       }
       case "lru": {
@@ -99,6 +94,6 @@ export class Cache {
   }
 
   estaCheia(): boolean {
-    return this.espacosUsados !== this.numeroDeLinhas
+    return this.espacosUsados === this.numeroDeLinhas
   }
 }

@@ -1,5 +1,5 @@
 import { mapeamento } from "./model/mapeamento.ts";
-import { momento } from "./utils/gerarMomento.ts";
+import { agora } from "./utils/gerarMomento.ts";
 
 export class mapeamentoAssociativoLRU extends mapeamento{
   ultimoAcesso?: number
@@ -14,6 +14,6 @@ export class mapeamentoAssociativoLRU extends mapeamento{
   }
 
   async acessar() {
-    this.ultimoAcesso = await momento()
+    this.ultimoAcesso = await agora()
   }
 }

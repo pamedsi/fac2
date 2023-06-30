@@ -3,7 +3,7 @@ import { mapeamentoAssociativoLRU } from "./associativoLRU.ts";
 import { Cache } from "./cache.ts"
 import { mapeamentoDireto } from "./direto.ts";
 import { tipoDeMapeamento } from "./model/tipoDeMapeamento.ts"
-import { momento } from "./utils/gerarMomento.ts";
+import { agora } from "./utils/gerarMomento.ts";
 
 try {
   const nomeDoArquivo: string = Deno.args[0]
@@ -24,27 +24,21 @@ try {
         break
       }
       case "fifo": {
-        const bloco = new mapeamentoAssociativoFIFO(endereco, await momento())
+        const bloco = new mapeamentoAssociativoFIFO(endereco, await agora())
+        if(cache.buscar(bloco)) console.log('HIT')
+        else console.log('MISS')
         break
       }
       case "lru": {
-        const bloco = new mapeamentoAssociativoLRU(endereco, await momento())
+        const bloco = new mapeamentoAssociativoLRU(endereco, await agora())
+        if(cache.buscar(bloco)) console.log('HIT')
+        else console.log('MISS')
         break
       }
       default:
         throw new Error("Modelo de mapeamento não reconhecido!")
     }
-
   })
-    console.log(cache)
 } catch (error) {
   console.log(error)
 }
-
-
-
-
-
- 
-// const _tamanhoDaCacheEmBytes = numeroDeLinhas * tamanhoDaLinha
-// const _tamanhoDaMemoriaPrincipal = 2147483648

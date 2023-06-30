@@ -9,9 +9,7 @@ export const comparar = (enderecoAProcurar: T, enderecoEncontrado: T, tipo: tipo
       const blocoAProcurar = enderecoAProcurar as mapeamentoDireto
       const blocoEncontrado = enderecoEncontrado as mapeamentoDireto
       delete blocoAProcurar.index
-      delete blocoAProcurar.blocoNaMP
       delete blocoEncontrado.index
-      delete blocoEncontrado.blocoNaMP
       return JSON.stringify(blocoAProcurar) === JSON.stringify(blocoEncontrado)
     }
     case "fifo": {
