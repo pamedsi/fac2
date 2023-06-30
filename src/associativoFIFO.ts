@@ -1,7 +1,7 @@
 import { mapeamento } from "./model/mapeamento.ts";
 
 export class mapeamentoAssociativoFIFO extends mapeamento{
-  createdAt: number
+  criadoEm?: number
 
   constructor (endereco: string) {
     super()
@@ -9,6 +9,6 @@ export class mapeamentoAssociativoFIFO extends mapeamento{
 
     this.tag = enderecoEmBits.substring(0,20)
     this.palavra = enderecoEmBits.substring(20,32)
-    this.createdAt = Date.now()
+    this.criadoEm = Date.now()
   }
 }

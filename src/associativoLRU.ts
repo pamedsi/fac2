@@ -1,7 +1,7 @@
 import { mapeamento } from "./model/mapeamento.ts";
 
 export class mapeamentoAssociativoLRU extends mapeamento{
-  ultimoAcesso: number
+  ultimoAcesso?: number
 
   constructor (endereco: string) {
     super()

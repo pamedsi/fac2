@@ -1,9 +1,10 @@
 import { mapeamentoAssociativoFIFO } from "./associativoFIFO.ts";
-import { mapeamentoDireto } from "./direto.ts"
-import { tipoDeMapeamento } from "./model/tipoDeMapeamento.ts";
+import { mapeamentoAssociativoLRU } from "./associativoLRU.ts";
+import { T, tipoDeMapeamento } from "./model/tipoDeMapeamento.ts";
 import { comparar } from "./utils/compararEnderecos.ts";
 
 export class Cache {
+  // deno-lint-ignore no-explicit-any
   linhas: any[]
   // linhas: mapeamentoDireto[] | mapeamentoAssociativo [] | (mapeamentoAssociativo & mapeamentoDireto)[] | (mapeamentoAssociativo | mapeamentoDireto)[]
   numeroDeLinhas: number
@@ -22,9 +23,11 @@ export class Cache {
     this.espacosUsados = 0
   }
 
-  buscar(bloco: mapeamentoDireto | mapeamentoAssociativoFIFO) {
+  buscar (bloco: T) {
     // Meta agora é endenter o que vai ser guardado nesse array
     // Se a linha ou se a palavra
+
+    // COrrigir a função de comparar os objetos no compararEnderecos.ts
       switch (this.mapeamento) {
       case "direto": {
         // const {tag, linha, palavra} = new mapeamentoDireto(endereco)
@@ -37,24 +40,29 @@ export class Cache {
         //   return false
         // }
       }
-      case "fifo": {
-        const achou = this.linhas.find(linhaDeCache => comparar(linhaDeCache, bloco))
+      case "fifo" :{
+        const achou = this.linhas.find(linhaDeCache => comparar(linhaDeCache, bloco, "fifo"))
         if (achou) return true
         else {
           this.guardar(bloco)
           return false
         }
       }
-      case "lru": {
-        
-        break
+      case "lru" :{
+        const achou = this.linhas.find(linhaDeCache => comparar(linhaDeCache, bloco, "lru"))
+        if (achou) { 
+          achou.acessar()
+          return true
+        }
+        else {
+          this.guardar(bloco)
+          return false
+        }
       }
     }
-
-    return false
   }
 
-  guardar(bloco: mapeamentoAssociativoFIFO | mapeamentoDireto) {
+  guardar(bloco: T) {
     switch (this.mapeamento) {
       case "direto": {
         
@@ -66,12 +74,12 @@ export class Cache {
           this.espacosUsados++
         }
         else {
-          const maisAntigo = this.linhas.reduce((menor, atual) => {
-            return atual.createdAt < menor.createdAt ? atual : menor
+          const maisAntigo: mapeamentoAssociativoFIFO = this.linhas.reduce((menor, atual) => {
+            return atual.criadoEm < menor.criadoEm ? atual : menor
           })
-          this.linhas = this.linhas.filter(bloco => !comparar(bloco, maisAntigo))
+          this.linhas = this.linhas.filter(bloco => !comparar(bloco, maisAntigo, "fifo"))
         }
-        
+
         console.log(`
         Guardando endereço na cache.
         Espaços usados: ${this.espacosUsados}\n
@@ -79,7 +87,16 @@ export class Cache {
         break
       }
       case "lru": {
-        
+        if (!this.estaCheia()) {
+          this.linhas.push(bloco)
+          this.espacosUsados++
+        }
+        else {
+          const acessadoMenosRecentemente: mapeamentoAssociativoLRU = this.linhas.reduce((acessadoMenosRecentemente, atual) => {
+            return acessadoMenosRecentemente.ultimoAcesso < acessadoMenosRecentemente.ultimoAcesso ? atual : acessadoMenosRecentemente
+          })
+          this.linhas = this.linhas.filter(bloco => !comparar(bloco, acessadoMenosRecentemente, "lru"))
+        }
         break
       }
     }

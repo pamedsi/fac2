@@ -1,3 +1,14 @@
+const nomeDoArquivo = Deno.args[0]
+const entrada: string[] = (await Deno.readTextFile(`./${nomeDoArquivo}`)).split('\n')
+const [numeroDeLinhas, tamanhoDaLinha] = entrada.shift()!.split(' ').map(Number)
+const _tamanhoDaCacheEmBytes = numeroDeLinhas * tamanhoDaLinha
+
+
+
+
+
+
+
 // o número de linhas da memória cache
 // o tamanho de cada linha da memória cache em bytes.
 // Em mapeamento associativo: tamanhoDoBloco = tamanhoDaLinha
@@ -30,9 +41,4 @@
   // DO bit 10 até o 19 = LINHA
   // DO bit 20 até o 21 = PALAVRA
 
-
-const nomeDoArquivo = Deno.args[0]
-const entrada: string[] = (await Deno.readTextFile(`./${nomeDoArquivo}`)).split('\n')
-const [numeroDeLinhas, tamanhoDaLinha] = entrada.shift()!.split(' ').map(Number)
-const _tamanhoDaCacheEmBytes = numeroDeLinhas * tamanhoDaLinha
 

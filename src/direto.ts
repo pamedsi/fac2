@@ -2,6 +2,7 @@ import { mapeamento } from "./model/mapeamento.ts"
 
 export class mapeamentoDireto extends mapeamento {
   linha: string
+  index?: number
 
   constructor (endereco: string) {
     super()
