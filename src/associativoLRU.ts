@@ -1,18 +1,19 @@
 import { mapeamento } from "./model/mapeamento.ts";
+import { momento } from "./utils/gerarMomento.ts";
 
 export class mapeamentoAssociativoLRU extends mapeamento{
   ultimoAcesso?: number
 
-  constructor (endereco: string) {
+  constructor (endereco: string, ultimoAcesso: number) {
     super()
     const enderecoEmBits = parseInt(endereco, 16).toString(2).padStart(32, '0')
 
     this.tag = enderecoEmBits.substring(0,20)
     this.palavra = enderecoEmBits.substring(20,32)
-    this.ultimoAcesso = Date.now()
+    this.ultimoAcesso = ultimoAcesso
   }
 
-  acessar() {
-    this.ultimoAcesso = Date.now()
+  async acessar() {
+    this.ultimoAcesso = await momento()
   }
 }
