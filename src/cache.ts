@@ -2,7 +2,7 @@ import { mapeamentoAssociativoFIFO } from "./associativoFIFO.ts";
 import { mapeamentoAssociativoLRU } from "./associativoLRU.ts";
 import { mapeamentoDireto } from "./direto.ts";
 import { T, tipoDeMapeamento } from "./model/tipoDeMapeamento.ts";
-import { comparar } from "./utils/compararEnderecos.ts";
+import { comparar } from "./utils/buscarBloco.ts";
 
 export class Cache {
   // deno-lint-ignore no-explicit-any
