@@ -1,4 +1,4 @@
-import { mapeamentoAssociativo } from "./model/mapeamentoAssociativo.ts";
+import { mapeamentoAssociativo } from "../model/mapeamentoAssociativo.ts";
 
 export class mapeamentoAssociativoFIFO extends mapeamentoAssociativo{
   criadoEm?: number

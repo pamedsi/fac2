@@ -1,13 +1,13 @@
-import { mapeamentoAssociativoFIFO } from "./associativoFIFO.ts";
-import { mapeamentoAssociativoLRU } from "./associativoLRU.ts";
+import { mapeamentoAssociativoFIFO } from "./mapeamentos/associativoFIFO.ts";
+import { mapeamentoAssociativoLRU } from "./mapeamentos/associativoLRU.ts";
 import { Cache } from "./cache.ts"
-import { mapeamentoDireto } from "./direto.ts";
+import { mapeamentoDireto } from "./mapeamentos/direto.ts";
 import { tipoDeMapeamento } from "./model/tipoDeMapeamento.ts"
 import { agora } from "./utils/gerarMomento.ts";
 import { entradaValida } from "./validation/validadorDeEntrada.ts";
 
 try {
-  const [nomeDoArquivo,tipoDoMapeamento]  = Deno.args
+  const [nomeDoArquivo, tipoDoMapeamento]  = Deno.args
   if (!nomeDoArquivo) throw new Error("Insira o nome do arquivo de entrada (Ex: 'input.txt'")
   if (!entradaValida(tipoDoMapeamento)) throw new Error("Tipo de mapeamento inválido! Insira 'DIR', 'LRU' ou 'FIFO'.");
   
@@ -17,7 +17,7 @@ try {
   const cache = new Cache(numeroDeLinhas, mapeamento)
 
   entradas.forEach(async endereco => {
-    switch (tipoDoMapeamento) {
+    switch (mapeamento) {
       case "dir": {
         const bloco = new mapeamentoDireto(endereco, numeroDeLinhas, tamanhoDaLinha)
         if(cache.buscar(bloco)) console.log('HIT')

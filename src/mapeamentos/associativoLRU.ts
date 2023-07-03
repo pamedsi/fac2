@@ -1,5 +1,5 @@
-import { mapeamentoAssociativo } from "./model/mapeamentoAssociativo.ts";
-import { agora } from "./utils/gerarMomento.ts";
+import { mapeamentoAssociativo } from "../model/mapeamentoAssociativo.ts";
+import { agora } from "../utils/gerarMomento.ts";
 
 export class mapeamentoAssociativoLRU extends mapeamentoAssociativo{
   ultimoAcesso?: number

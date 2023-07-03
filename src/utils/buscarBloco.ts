@@ -1,4 +1,4 @@
-import { mapeamentoDireto } from "../direto.ts";
+import { mapeamentoDireto } from "../mapeamentos/direto.ts";
 import { T, tipoDeMapeamento } from "../model/tipoDeMapeamento.ts"
 
 export const comparar = (enderecoDaMemoria: T, enderecoDoProcessador: T, tipo: tipoDeMapeamento) => {
