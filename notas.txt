@@ -3,11 +3,14 @@ o tamanho de cada linha da memória cache em bytes.
 Em mapeamento associativo: tamanhoDoBloco = tamanhoDaLinha
 
 Tamanho de cada linha = 4MB ou 4096B
-Quantidade de linhas = 1024 ou 1B
+Quantidade de linhas = 1024
 Cada bloco tem 4096 Bytes ou 4KB ou 2^12
 Tamanho da RAM = 2GB
 
 Mapeamento associativo:
+    Se a palavra tem 1 byte e o bloco tem 4096 bytes, o bloco tem 4096 palavras, que é 2¹² bytes.
+    Que são 12 bits para representar cada palavra.
+
   endereço = tag e palavra
   A palavra vai ter 12 bits
   A tag vai ter 20 bits

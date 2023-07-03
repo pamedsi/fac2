@@ -6,31 +6,30 @@ import { tipoDeMapeamento } from "./model/tipoDeMapeamento.ts"
 import { agora } from "./utils/gerarMomento.ts";
 
 try {
-  const nomeDoArquivo: string = Deno.args[0]
-  const tipoDoMapeamento = Deno.args[1].toLowerCase() as tipoDeMapeamento
-  if (!nomeDoArquivo) throw new Error("Insira o nome do arquivo de entrada!");
-  if (!tipoDoMapeamento) throw new Error("Insira o tipo do mapeamento! Ex: 'LRU', 'FIFO, ou 'DIR'");
-  
+  const [nomeDoArquivo,tipoDoMapeamento]  = Deno.args
+  if (!nomeDoArquivo || !tipoDoMapeamento) throw new Error("Insira o nome do arquivo de entrada (Ex: 'input.txt') e o tipo do mapeamento! Ex: 'LRU', 'FIFO, ou 'DIR'");
+
+  const mapeamento = tipoDoMapeamento.toLowerCase() as tipoDeMapeamento
   const entradas = (await Deno.readTextFile(`./${nomeDoArquivo}`)).split('\n')
-  const [numeroDeLinhas, _tamanhoDaLinha] = entradas.shift()!.split(' ').map(Number)
-  const cache = new Cache(numeroDeLinhas, tipoDoMapeamento)
+  const [numeroDeLinhas, tamanhoDaLinha] = entradas.shift()!.split(' ').map(Number)
+  const cache = new Cache(numeroDeLinhas, mapeamento)
 
   entradas.forEach(async endereco => {
     switch (tipoDoMapeamento) {
       case "dir": {
-        const bloco = new mapeamentoDireto(endereco, numeroDeLinhas)
+        const bloco = new mapeamentoDireto(endereco, numeroDeLinhas, tamanhoDaLinha)
         if(cache.buscar(bloco)) console.log('HIT')
         else console.log('MISS')
         break
       }
       case "fifo": {
-        const bloco = new mapeamentoAssociativoFIFO(endereco, await agora())
+        const bloco = new mapeamentoAssociativoFIFO(endereco, await agora(), tamanhoDaLinha)
         if(cache.buscar(bloco)) console.log('HIT')
         else console.log('MISS')
         break
       }
       case "lru": {
-        const bloco = new mapeamentoAssociativoLRU(endereco, await agora())
+        const bloco = new mapeamentoAssociativoLRU(endereco, tamanhoDaLinha, await agora())
         if(cache.buscar(bloco)) console.log('HIT')
         else console.log('MISS')
         break
