@@ -10,7 +10,7 @@ O ambiente de desenvolvimento escolhido foi o Deno, que roda Typescript.
 
 Para instalá-lo cheque as instruções no site: https://deno.land/manual@v1.34.3/getting_started/installation
 
-Ou utilize algum serviço que roda código online, como o [replit](https://replit.com/@PatrickMelo2/fac2) por exemplo, que oferece suporte ao Deno.
+Ou utilize algum serviço que roda código online, como o [replit](https://replit.com/@PatrickMelo2/FAC2) por exemplo, que oferece suporte ao Deno.
 
 No botão "replit" acima você encontra este repositório clonado.
 
