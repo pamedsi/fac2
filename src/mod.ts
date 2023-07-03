@@ -9,7 +9,7 @@ import { entradaValida } from "./validation/validadorDeEntrada.ts";
 try {
   const [nomeDoArquivo,tipoDoMapeamento]  = Deno.args
   if (!nomeDoArquivo) throw new Error("Insira o nome do arquivo de entrada (Ex: 'input.txt'")
-  if (!entradaValida(tipoDoMapeamento)) throw new Error("TIpo de mapeamento inválido! Insira 'DIR', 'LRU' ou 'FIFO'.");
+  if (!entradaValida(tipoDoMapeamento)) throw new Error("Tipo de mapeamento inválido! Insira 'DIR', 'LRU' ou 'FIFO'.");
   
   const mapeamento = tipoDoMapeamento.toLowerCase() as tipoDeMapeamento
   const entradas = (await Deno.readTextFile(`./${nomeDoArquivo}`)).split('\n')
