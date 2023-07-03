@@ -10,7 +10,8 @@ O ambiente de desenvolvimento escolhido foi o Deno, que roda Typescript.
 
 Para instalá-lo cheque as instruções no site: https://deno.land/manual@v1.34.3/getting_started/installation
 
-Ou utilize algum serviço que roda código online, como o [replit](https://replit.com/) por exemplo, que oferece suporte ao Deno.
+Ou utilize algum serviço que roda código online, como o [replit](https://replit.com/@PatrickMelo2/fac2) por exemplo, que oferece suporte ao Deno.
+No botão "replit" acima você encontra este repositório clonado.
 
 # Execução:
 
@@ -33,4 +34,4 @@ Sobre o script acima:
 
 Também se refere ao tipo de algorítimo de troca de bloco da cache, caso ela esteja cheia. "LRU" significa "Least Recently Used" e "FIFO" significa "First In First Out".
 
-O arquivo "instructions.txt" tem a descrição do trabalho, e o arquivo "notas.txt" tem as informações possíveis de se chegar sobre cache, bloco e outras propriedades que podem ser úteis ao algorítimo, a partir do arquivo de entrada.
+O arquivo "instruções.txt" tem a descrição do trabalho, e o arquivo "notas.txt" tem as informações possíveis de se chegar sobre cache, bloco e outras propriedades que podem ser úteis ao algorítimo, a partir do arquivo de entrada.
