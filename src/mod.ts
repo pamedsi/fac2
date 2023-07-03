@@ -4,11 +4,13 @@ import { Cache } from "./cache.ts"
 import { mapeamentoDireto } from "./direto.ts";
 import { tipoDeMapeamento } from "./model/tipoDeMapeamento.ts"
 import { agora } from "./utils/gerarMomento.ts";
+import { entradaValida } from "./validation/validadorDeEntrada.ts";
 
 try {
   const [nomeDoArquivo,tipoDoMapeamento]  = Deno.args
-  if (!nomeDoArquivo || !tipoDoMapeamento) throw new Error("Insira o nome do arquivo de entrada (Ex: 'input.txt') e o tipo do mapeamento! Ex: 'LRU', 'FIFO, ou 'DIR'");
-
+  if (!nomeDoArquivo) throw new Error("Insira o nome do arquivo de entrada (Ex: 'input.txt'")
+  if (!entradaValida(tipoDoMapeamento)) throw new Error("TIpo de mapeamento inválido! Insira 'DIR', 'LRU' ou 'FIFO'.");
+  
   const mapeamento = tipoDoMapeamento.toLowerCase() as tipoDeMapeamento
   const entradas = (await Deno.readTextFile(`./${nomeDoArquivo}`)).split('\n')
   const [numeroDeLinhas, tamanhoDaLinha] = entradas.shift()!.split(' ').map(Number)
