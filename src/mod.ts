@@ -5,6 +5,7 @@ import { mapeamentoDireto } from "./mapeamentos/direto.ts";
 import { tipoDeMapeamento } from "./model/tipoDeMapeamento.ts"
 import { agora } from "./utils/gerarMomento.ts";
 import { entradaValida } from "./validation/validadorDeEntrada.ts";
+const { log } = console
 
 try {
   const [nomeDoArquivo, tipoDoMapeamento]  = Deno.args
@@ -20,20 +21,20 @@ try {
     switch (mapeamento) {
       case "dir": {
         const bloco = new mapeamentoDireto(endereco, numeroDeLinhas, tamanhoDaLinha)
-        if(cache.buscar(bloco)) console.log('HIT')
-        else console.log('MISS')
+        if(await cache.buscar(bloco)) log('HIT')
+        else log('MISS')
         break
       }
       case "fifo": {
         const bloco = new mapeamentoAssociativoFIFO(endereco, await agora(), tamanhoDaLinha)
-        if(cache.buscar(bloco)) console.log('HIT')
-        else console.log('MISS')
+        if(await cache.buscar(bloco)) log('HIT')
+        else log('MISS')
         break
       }
       case "lru": {
         const bloco = new mapeamentoAssociativoLRU(endereco, tamanhoDaLinha, await agora())
-        if(cache.buscar(bloco)) console.log('HIT')
-        else console.log('MISS')
+        if(await cache.buscar(bloco)) log('HIT')
+        else log('MISS')
         break
       }
       default:
@@ -41,5 +42,5 @@ try {
     }
   })
 } catch (error) {
-  console.log(error)
+  log(error)
 }

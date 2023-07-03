@@ -18,7 +18,7 @@ export class Cache {
     this.espacosUsados = 0
   }
 
-  buscar (bloco: T) {
+  async buscar (bloco: T) {
       switch (this.mapeamento) {
       case "dir": {
         const blocoConvertido = bloco as mapeamentoDireto
@@ -40,7 +40,7 @@ export class Cache {
       case "lru" :{
         const achou = this.linhas.find(linhaDeCache => comparar(linhaDeCache, bloco, "lru"))
         if (achou) { 
-          achou.acessar()
+          await achou.acessar()
           return true
         }
         else {
@@ -68,6 +68,7 @@ export class Cache {
             return atual.criadoEm < menor.criadoEm ? atual : menor
           })
           this.linhas = this.linhas.filter(bloco => !comparar(bloco, maisAntigo, "fifo"))
+          this.linhas.push(bloco)
         }
         break
       }
@@ -81,6 +82,7 @@ export class Cache {
             return acessadoMenosRecentemente.ultimoAcesso < acessadoMenosRecentemente.ultimoAcesso ? atual : acessadoMenosRecentemente
           })
           this.linhas = this.linhas.filter(bloco => !comparar(bloco, acessadoMenosRecentemente, "lru"))
+          this.linhas.push(bloco)
         }
         break
       }
